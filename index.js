@@ -1,4 +1,5 @@
 var express = require('express');
+var fortune = require('./lib/fortune.js');
 var app = express();
 
 //设置handlebars视图引擎
@@ -9,15 +10,6 @@ app.set('view engine','handlebars');
 
 app.set('port',process.env.PORT || 3000);
 
-/**--------------------------------*/
-var fortunes = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will have a pleasant surprise.",
-	"Whenever possible, keep it simple.",
-];
-
 //将public中的所有内容加载为static中间件
 app.use(express.static(__dirname + '/public'));
 
@@ -25,9 +17,8 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req,res){
 	res.render('home');
 });
-app.get('/about', function(req,res){
-	var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-	res.render('about',{fortune: randomFortune});
+app.get('/about', function(req,res){	
+	res.render('about',{fortune: fortune.getFortune()});
 })
 
 //定制404页面
